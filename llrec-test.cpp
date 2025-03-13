@@ -67,7 +67,30 @@ void dealloc(Node* head)
 //   function object struct declarations
 // -----------------------------------------------
 
+struct filterOdd {
+    bool operator()(int value) 
+    { 
+        return value % 2 != 0; 
+    }
+};
 
+struct filterEven {
+    bool operator()(int value) { 
+        return value % 2 == 0; 
+    }
+};
+
+struct LesserThan{
+    int threshold;
+    LesserThan(int t) : threshold(t) {}
+    bool operator()(int value) { return value < threshold; }
+};
+
+struct GreaterThan {
+    int threshold;
+    GreaterThan(int t) : threshold(t) {}
+    bool operator()(int value) { return value > threshold; }
+};
 
 
 
@@ -86,8 +109,26 @@ int main(int argc, char* argv[])
     print(head);
 
     // Test out your linked list code
+    Node* filteredList = llfilter(head, filterOdd());
+    cout << "post removal of odd numbers: ";
+    print(filteredList);
 
+    filteredList = llfilter(filteredList, filterEven());
+    cout << "post removal of even numbers: ";
+    print(filteredList);
+    
+    Node* smaller = NULL;
+    Node* larger = NULL;
+    int pivot = 7;
+    llpivot(filteredList, smaller, larger, pivot);
 
+    cout << "smaller list: " << pivot << endl;
+    print(smaller);
+    cout << "larger list: " << pivot << endl;
+    print(larger);
+
+    dealloc(smaller);
+    dealloc(larger);
 
     
     return 0;
